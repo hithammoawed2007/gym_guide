@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymConnect - المتجر الرياضي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff3e3e;
+            --secondary: #1a1a1a;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --gray: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+        }
+
+        .navbar {
+            background: var(--secondary);
+            padding: 0 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .store-section {
+            padding: 6rem 5% 4rem;
+        }
+
+        .store-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+            background: #f8f8f8;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 10px;
+            transition: transform 0.3s;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .store-categories {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .store-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid var(--primary);
+            border-radius: 25px;
+            background: none;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .catalog-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.85);
+            z-index: 1100;
+            overflow-y: auto;
+            padding: 15px;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 20px auto;
+            padding: 20px;
+            width: 95%;
+            max-width: 800px;
+            border-radius: 15px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            color: var(--dark);
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray);
+            border-radius: 50%;
+        }
+
+        .catalog-details {
+            display: grid;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .product-gallery {
+            width: 100%;
+            background: var(--gray);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 250px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .product-details {
+            padding: 10px;
+        }
+
+        .product-details h3 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .product-details p {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .product-options {
+            display: grid;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .size-options, .quantity {
+            background: var(--gray);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .size-options h4, .quantity h4 {
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .size-options select, .quantity input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* تحسينات خاصة للجوال */
+        @media (max-width: 576px) {
+            .modal-content {
+                margin: 10px auto;
+                padding: 15px;
+            }
+
+            .catalog-details {
+                grid-template-columns: 1fr;
+            }
+
+            .main-image {
+                height: 200px;
+            }
+
+            .product-details h3 {
+                font-size: 1.1rem;
+            }
+
+            .product-details p {
+                font-size: 1.2rem;
+            }
+
+            .size-options, .quantity {
+                padding: 12px;
+            }
+
+            .size-options select, .quantity input {
+                padding: 8px;
+                font-size: 0.9rem;
+            }
+
+            .btn-primary {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+
+            /* تحسين التمرير على الجوال */
+            .catalog-modal {
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* تحسين إغلاق النافذة على الجوال */
+            .close-modal {
+                width: 35px;
+                height: 35px;
+                font-size: 20px;
+                background: var(--gray);
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+        }
+
+        /* تحسين التفاعل مع الأزرار */
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* تحسين عرض الصور */
+        .product-gallery {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* إضافة تأثير التحميل */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--gray);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* التنسيقات الأساسية */
+        :root {
+            --primary: #ff3e3e;
+            --secondary: #1a1a1a;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --gray: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* تنسيقات المتجر */
+        .store-container {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .products-grid {
+            display: grid;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+
+        /* التجاوب مع أحجام الشاشات المختلفة */
+        @media (min-width: 576px) {
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 992px) {
+            .products-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* تنسيق بطاقة المنتج */
+        .product-card {
+            background: var(--light);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-price {
+            color: var(--primary);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        /* تنسيق الأزرار */
+        .btn-buy {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--primary);
+            color: var(--light);
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-buy:hover {
+            background: var(--secondary);
+        }
+
+        /* تنسيق فلاتر المنتجات */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--gray);
+            border-radius: 10px;
+        }
+
+        .filter-select {
+            flex: 1;
+            min-width: 150px;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        /* تنسيق سلة التسوق */
+        .cart-icon {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--primary);
+            color: var(--light);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary);
+            color: var(--light);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+        }
+
+        /* تنسيقات إضافية للجوال */
+        @media (max-width: 576px) {
+            .store-container {
+                padding: 0.5rem;
+            }
+
+            .product-card {
+                margin-bottom: 1rem;
+            }
+
+            .product-title {
+                font-size: 1rem;
+            }
+
+            .product-price {
+                font-size: 1.1rem;
+            }
+
+            .product-description {
+                font-size: 0.85rem;
+            }
+
+            .btn-buy {
+                padding: 0.6rem;
+                font-size: 0.9rem;
+            }
+
+            .filters {
+                padding: 0.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .filter-select {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+
+        /* تحسين عرض النافذة المنبثقة في الجوال */
+        @media (max-width: 576px) {
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+                padding: 15px;
+            }
+
+            .catalog-details {
+                grid-template-columns: 1fr;
+            }
+
+            .main-image {
+                height: 200px;
+            }
+        }
+
+        /* تحسين تجربة المستخدم عند الضغط على الصور */
+        .product-image:active {
+            opacity: 0.8;
+        }
+
+        .product-card:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">G</span>
+            GymConnect
+        </a>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="index.html#search">ابحث عن صالة</a>
+            <a href="training_plans.html">خطط التدريب</a>
+            <a href="#store">المتجر</a>
+        </div>
+    </nav>
+
+    <section class="store-section" id="store">
+        <h2>المتجر الرياضي</h2>
+        <div class="store-filters">
+            <button class="filter-btn active" data-category="all">الكل</button>
+            <button class="filter-btn" data-category="equipment">معدات رياضية</button>
+            <button class="filter-btn" data-category="clothes">ملابس</button>
+            <button class="filter-btn" data-category="supplements">مكملات غذائية</button>
+            <button class="filter-btn" data-category="accessories">إكسسوارات</button>
+        </div>
+        
+        <!-- تصحيح هيكل المنتجات -->
+        <div class="store-categories">
+            <!-- دمبل متعدد الأوزان -->
+            <div class="product-card" data-category="equipment">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=400" alt="دمبل متعدد الأوزان">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">دمبل متعدد الأوزان</h3>
+                    <div class="product-price">1,200 ج.م</div>
+                    <button class="btn">اشتري الآن</button>
+                </div>
+            </div>
+
+            <!-- طقم رياضي -->
+            <div class="product-card" data-category="clothes">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1539185441755-769473a23570" alt="طقم رياضي">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">طقم رياضي احترافي</h3>
+                    <p>طقم رياضي مصنوع من أفضل الخامات</p>
+                    <div class="product-price">800 ج.م</div>
+                    <button class="btn">اشتري الآن</button>
+                </div>
+            </div>
+
+            <!-- واي بروتين -->
+            <div class="product-card" data-category="supplements">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1539185441755-769473a23570" alt="بروتين">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">واي بروتين 100%</h3>
+                    <p>بروتين عالي الجودة - 2.5 كجم</p>
+                    <div class="product-price">1,500 ج.م</div>
+                    <button class="btn">اشتري الآن</button>
+                </div>
+            </div>
+
+            <!-- حزام رياضي -->
+            <div class="product-card" data-category="accessories">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="حزام رياضي">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">حزام رياضي احترافي</h3>
+                    <p>حزام جلد طبيعي لرفع الأثقال مع دعم للظهر</p>
+                    <div class="product-price">400 ج.م</div>
+                    <button class="btn">اشتري الآن</button>
+                </div>
+            </div>
+
+            <!-- باقي المنتجات... -->
+        </div>
+    </section>
+
+    <div class="catalog-modal" id="catalogModal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2>كتالوج المنتج</h2>
+            <div class="catalog-details">
+                <div class="product-gallery">
+                    <img src="" alt="" id="modalImage" class="main-image">
+                </div>
+                <div class="product-details">
+                    <h3 id="modalTitle"></h3>
+                    <p id="modalPrice"></p>
+                    <div class="product-options">
+                        <div class="size-options">
+                            <h4>اختر المقاس:</h4>
+                            <select id="sizeSelect">
+                                <option value="s">S</option>
+                                <option value="m">M</option>
+                                <option value="l">L</option>
+                                <option value="xl">XL</option>
+                            </select>
+                        </div>
+                        <div class="quantity">
+                            <h4>الكمية:</h4>
+                            <input type="number" min="1" value="1" id="quantityInput">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary" onclick="openWhatsApp()">تأكيد الشراء</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // إضافة وظيفة الفلترة
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const products = document.querySelectorAll('.product-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // إزالة الفئة النشطة من جميع الأزرار
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // إضافة الفئة النشطة للزر المضغوط
+                btn.classList.add('active');
+                
+                const category = btn.dataset.category;
+                
+                products.forEach(product => {
+                    if (category === 'all' || product.dataset.category === category) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // إضافة كود النافذة المنبثقة
+        const modal = document.getElementById('catalogModal');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalPrice = document.getElementById('modalPrice');
+        const closeBtn = document.querySelector('.close-modal');
+        const buyButtons = document.querySelectorAll('.btn');
+
+        buyButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const productCard = e.target.closest('.product-card');
+                const image = productCard.querySelector('img').src;
+                const title = productCard.querySelector('.product-title').textContent;
+                const price = productCard.querySelector('.product-price').textContent;
+
+                modalImage.src = image;
+                modalImage.alt = title;
+                modalTitle.textContent = title;
+                modalPrice.textContent = price;
+                modal.style.display = 'block';
+            });
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // إضافة وظيفة فتح الواتساب
+        function openWhatsApp() {
+            // رقم الهاتف الخاص بك (غير هذا الرقم إلى رقمك)
+            const phoneNumber = "201070321501"; // ضع رقم هاتفك هنا
+            
+            // تجهيز نص الرسالة
+            const title = document.getElementById('modalTitle').textContent;
+            const price = document.getElementById('modalPrice').textContent;
+            const size = document.getElementById('sizeSelect').value;
+            const quantity = document.getElementById('quantityInput').value;
+            
+            const message = `مرحباً، أريد شراء:
+- المنتج: ${title}
+- السعر: ${price}
+- المقاس: ${size}
+- الكمية: ${quantity}`;
+
+            // ترميز الرسالة للرابط
+            const encodedMessage = encodeURIComponent(message);
+            
+            // إنشاء رابط الواتساب
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            // فتح الرابط في نافذة جديدة
+            window.open(whatsappLink, '_blank');
+            
+            // إغلاق النافذة المنبثقة
+            modal.style.display = 'none';
+        }
+    </script>
+</body>
+</html> 
