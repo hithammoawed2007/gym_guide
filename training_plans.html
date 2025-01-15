@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymConnect - الخطط التدريبية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff3e3e;
+            --secondary: #1a1a1a;
+            --dark: #1e293b;
+            --light: #ffffff;
+            --accent: #ffd700;
+            --gray: #f4f4f4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--light);
+        }
+
+        .navbar {
+            background: var(--secondary);
+            padding: 0 1rem;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 35px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .training-plans {
+            padding: 6rem 5% 4rem;
+            background: var(--light);
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .plan-header {
+            padding: 1.5rem;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+        }
+
+        .plan-header h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .plan-price {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .plan-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .plan-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .plan-features {
+            padding: 1.5rem;
+        }
+
+        .plan-features h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .plan-features ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .plan-features li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+
+        .plan-features li:before {
+            content: "✓";
+            color: var(--primary);
+            margin-left: 0.5rem;
+            font-weight: bold;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .plans-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: var(--secondary);
+                flex-direction: column;
+                padding: 2rem;
+                transition: 0.3s;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links a {
+                padding: 1rem 0;
+                border-bottom: 1px solid rgba(255,255,255,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            <span class="logo-icon">G</span>
+            GymConnect
+        </a>
+        <div class="nav-links">
+            <a href="index.html">الرئيسية</a>
+            <a href="index.html#search">ابحث عن صالة</a>
+            <a href="#plans">خطط التدريب</a>
+            <a href="store.html">المتجر</a>
+        </div>
+    </nav>
+
+    <section class="training-plans" id="plans">
+        <h2>خطط تدريبية احترافية</h2>
+        
+        <div class="plans-grid">
+            <!-- خطة كمال الأجسام -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <h3>خطة كمال الأجسام</h3>
+                    <span class="plan-price">1200 ج.م</span>
+                </div>
+                <div class="plan-image">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48" alt="كمال الأجسام">
+                </div>
+                <div class="plan-features">
+                    <h4>مميزات الخطة:</h4>
+                    <ul>
+                        <li>برنامج تدريبي لمدة 12 أسبوع</li>
+                        <li>نظام غذائي متكامل</li>
+                        <li>متابعة أسبوعية مع مدرب محترف</li>
+                        <li>فيديوهات توضيحية للتمارين</li>
+                        <li>دعم فني على مدار الساعة</li>
+                    </ul>
+                </div>
+                <button class="btn" onclick="openWhatsApp(this)">اشترك الآن</button>
+            </div>
+
+            <!-- خطة حرق الدهون -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <h3>خطة حرق الدهون</h3>
+                    <span class="plan-price">900 ج.م</span>
+                </div>
+                <div class="plan-image">
+                    <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438" alt="حرق الدهون">
+                </div>
+                <div class="plan-features">
+                    <h4>مميزات الخطة:</h4>
+                    <ul>
+                        <li>برنامج تدريبي لمدة 8 أسابيع</li>
+                        <li>خطة غذائية منخفضة السعرات</li>
+                        <li>تمارين HIIT مكثفة</li>
+                        <li>تتبع يومي للتقدم</li>
+                        <li>نصائح للحفاظ على النتائج</li>
+                    </ul>
+                </div>
+                <button class="btn" onclick="openWhatsApp(this)">اشترك الآن</button>
+            </div>
+
+            <!-- خطة اللياقة البدنية -->
+            <div class="plan-card">
+                <div class="plan-header">
+                    <h3>خطة اللياقة البدنية</h3>
+                    <span class="plan-price">800 ج.م</span>
+                </div>
+                <div class="plan-image">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48" alt="لياقة بدنية">
+                </div>
+                <div class="plan-features">
+                    <h4>مميزات الخطة:</h4>
+                    <ul>
+                        <li>برنامج تدريبي لمدة 10 أسابيع</li>
+                        <li>تمارين متنوعة للياقة الشاملة</li>
+                        <li>نصائح لنمط حياة صحي</li>
+                        <li>تمارين منزلية وخارجية</li>
+                        <li>مجموعة دعم عبر الواتساب</li>
+                    </ul>
+                </div>
+                <button class="btn" onclick="openWhatsApp(this)">اشترك الآن</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function openWhatsApp(button) {
+            // رقم الهاتف الخاص بك
+            const phoneNumber = "201070321501";
+            
+            // الحصول على تفاصيل الخطة من البطاقة
+            const planCard = button.closest('.plan-card');
+            const title = planCard.querySelector('h3').textContent;
+            const price = planCard.querySelector('.plan-price').textContent;
+            const features = Array.from(planCard.querySelectorAll('.plan-features li'))
+                                 .map(li => li.textContent)
+                                 .join('\n- ');
+            
+            // تجهيز نص الرسالة
+            const message = `مرحباً، أريد الاشتراك في:
+- الخطة: ${title}
+- السعر: ${price}
+
+مميزات الخطة:
+- ${features}`;
+
+            // ترميز الرسالة للرابط
+            const encodedMessage = encodeURIComponent(message);
+            
+            // إنشاء رابط الواتساب
+            const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+            
+            // فتح الرابط في نافذة جديدة
+            window.open(whatsappLink, '_blank');
+        }
+    </script>
+</body>
+</html> 
